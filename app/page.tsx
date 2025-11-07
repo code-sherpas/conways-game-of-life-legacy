@@ -102,15 +102,36 @@ export default function Home() {
         </header>
 
         <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
-          <div className="flex-shrink-0">
+          <div className="flex flex-col gap-1">
             <GameGrid
               grid={grid}
               onCellClick={handleCellClick}
               cellSize={15}
             />
+            <div className="bg-gray-800 rounded-lg w-full">
+                <h2 className="text-2xl font-semibold mb-4">The Rules</h2>
+                <ul className="space-y-2 text-gray-300">
+                    <li>
+                        <strong className="text-green-400">Birth:</strong> A dead cell with exactly 3 live
+                        neighbors becomes alive
+                    </li>
+                    <li>
+                        <strong className="text-blue-400">Survival:</strong> A live cell with 2 or 3 live
+                        neighbors stays alive
+                    </li>
+                    <li>
+                        <strong className="text-red-400">Death by underpopulation:</strong> A live cell with
+                        fewer than 2 neighbors dies
+                    </li>
+                    <li>
+                        <strong className="text-red-400">Death by overpopulation:</strong> A live cell with
+                        more than 3 neighbors dies
+                    </li>
+                </ul>
+            </div>
           </div>
 
-          <div className="flex-shrink-0">
+          <div className="">
             <GameControls
               isRunning={isRunning}
               onPlayPause={handlePlayPause}
@@ -123,28 +144,6 @@ export default function Home() {
             />
           </div>
         </div>
-
-        <section className="mt-8 p-6 bg-gray-800 rounded-lg max-w-3xl">
-          <h2 className="text-2xl font-semibold mb-4">The Rules</h2>
-          <ul className="space-y-2 text-gray-300">
-            <li>
-              <strong className="text-green-400">Birth:</strong> A dead cell with exactly 3 live
-              neighbors becomes alive
-            </li>
-            <li>
-              <strong className="text-blue-400">Survival:</strong> A live cell with 2 or 3 live
-              neighbors stays alive
-            </li>
-            <li>
-              <strong className="text-red-400">Death by underpopulation:</strong> A live cell with
-              fewer than 2 neighbors dies
-            </li>
-            <li>
-              <strong className="text-red-400">Death by overpopulation:</strong> A live cell with
-              more than 3 neighbors dies
-            </li>
-          </ul>
-        </section>
       </div>
     </main>
   );
