@@ -18,8 +18,8 @@ export interface GameOfLifeConfig {
  * Main Game of Life engine class
  */
 export class GameOfLife {
-  private rows: number;
-  private cols: number;
+  private readonly rows: number;
+  private readonly cols: number;
   private grid: Grid;
 
   constructor(config: GameOfLifeConfig) {
