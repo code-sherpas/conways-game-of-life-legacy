@@ -1,72 +1,72 @@
 # Conway's Game of Life
 
-Una implementación de Conway's Game of Life usando Next.js, TypeScript y React.
+An implementation of Conway's Game of Life using Next.js, TypeScript, and React.
 
-## Descripción
+## Description
 
-Este proyecto implementa el autómata celular "Game of Life" de John Conway, separando claramente la lógica del motor del juego de la visualización y los controles de la interfaz.
+This project implements John Conway's "Game of Life" cellular automaton, clearly separating the game engine logic from the visualization and interface controls.
 
-## Reglas del Juego
+## Game Rules
 
-El universo del Game of Life es una cuadrícula ortogonal bidimensional infinita de celdas cuadradas, cada una de las cuales se encuentra en uno de dos estados posibles: viva o muerta. Cada celda interactúa con sus ocho vecinos (horizontal, vertical y diagonalmente adyacentes). En cada paso temporal, ocurren las siguientes transiciones:
+The Game of Life universe is an infinite two-dimensional orthogonal grid of square cells, each of which is in one of two possible states: alive or dead. Each cell interacts with its eight neighbors (horizontally, vertically, and diagonally adjacent). At each time step, the following transitions occur:
 
-1. **Subpoblación**: Cualquier celda viva con menos de dos vecinos vivos muere
-2. **Supervivencia**: Cualquier celda viva con dos o tres vecinos vivos sobrevive
-3. **Sobrepoblación**: Cualquier celda viva con más de tres vecinos vivos muere
-4. **Reproducción**: Cualquier celda muerta con exactamente tres vecinos vivos se convierte en una celda viva
+1. **Underpopulation**: Any live cell with fewer than two live neighbors dies
+2. **Survival**: Any live cell with two or three live neighbors survives
+3. **Overpopulation**: Any live cell with more than three live neighbors dies
+4. **Reproduction**: Any dead cell with exactly three live neighbors becomes a live cell
 
-## Arquitectura
+## Architecture
 
-El proyecto está organizado de la siguiente manera:
+The project is organized as follows:
 
-- **`engine/GameOfLife.ts`**: Motor del juego con la lógica de Conway completamente separada de la UI
-  - Implementa las reglas del juego
-  - Gestiona el estado de la cuadrícula
-  - Proporciona métodos para manipular el estado
+- **`engine/GameOfLife.ts`**: Game engine with Conway's logic completely separated from the UI
+  - Implements the game rules
+  - Manages the grid state
+  - Provides methods to manipulate the state
 
-- **`components/GameGrid.tsx`**: Componente de visualización de la cuadrícula
-  - Renderiza el estado actual del juego
-  - Maneja la interacción del usuario con las celdas
+- **`components/GameGrid.tsx`**: Grid visualization component
+  - Renders the current game state
+  - Handles user interaction with cells
 
-- **`components/GameControls.tsx`**: Panel de controles
-  - Play/Pause para iniciar/detener la simulación
-  - Step para avanzar una generación
-  - Clear para limpiar la cuadrícula
-  - Randomize para generar un patrón aleatorio
-  - Control de velocidad
+- **`components/GameControls.tsx`**: Control panel
+  - Play/Pause to start/stop the simulation
+  - Step to advance one generation
+  - Clear to reset the grid
+  - Randomize to generate a random pattern
+  - Speed control
 
-- **`app/page.tsx`**: Página principal que integra todos los componentes
+- **`app/page.tsx`**: Main page that integrates all components
 
-## Instalación y Ejecución
+## Installation and Running
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 npm run dev
 
-# Compilar para producción
+# Build for production
 npm run build
 
-# Ejecutar en modo producción
+# Run in production mode
 npm start
 ```
 
-La aplicación estará disponible en [http://localhost:3000](http://localhost:3000)
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
-## Uso
+## Usage
 
-1. Haz clic en las celdas individuales para activarlas/desactivarlas manualmente
-2. Usa el botón "Randomize" para generar un patrón aleatorio inicial
-3. Presiona "Play" para iniciar la simulación
-4. Ajusta la velocidad con el control deslizante
-5. Usa "Step" para avanzar una generación a la vez
-6. Presiona "Clear" para limpiar la cuadrícula
+1. Click on individual cells to toggle them on/off manually
+2. Use the "Randomize" button to generate a random initial pattern
+3. Press "Play" to start the simulation
+4. Adjust the speed with the slider control
+5. Use "Step" to advance one generation at a time
+6. Press "Clear" to reset the grid
 
-## Tecnologías
+## Technologies
 
 - Next.js 15
 - React 18
 - TypeScript 5
-- SVG para renderizado de la cuadrícula
+- SVG for grid rendering
