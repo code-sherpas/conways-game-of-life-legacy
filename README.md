@@ -15,20 +15,13 @@ Add a new rule to the game where cells that die become "zombies" for one generat
 3. After one generation, zombies become completely dead
 4. Zombies should be visually distinct (suggest using a different color, e.g., red or orange)
 
-### Requirements
-
-- ✅ The current behavior of the game must remain unchanged (except for the zombie visualization)
-- ✅ Add new tests to verify the zombie behavior
-- ✅ Refactor the legacy code as needed to implement the feature cleanly
-- ✅ Update the visualization to show zombies in a different color
-
 ### Success Criteria
 
-- The game still follows Conway's original rules for live/dead cells
-- Dying cells transition through a zombie state for exactly one generation
-- Zombies don't affect neighbor counts
-- The code is more maintainable after your changes than before
-- All tests pass
+- ✅ The game still follows Conway's original rules for live/dead cells (zombies don't affect neighbor counts)
+- ✅ Zombie cells are visually distinct from live cells
+- ✅ There are tests that prove zombie behavior works as expected
+- ✅ All tests pass
+- ✅ The code is more maintainable after your changes than before
 
 ## Description
 
