@@ -1,11 +1,4 @@
-/**
- * Conway's Game of Life Engine
- *
- * This module implements the core game logic separated from visualization.
- * The engine manages a 2D grid where each cell can be alive or dead.
- */
-
-export type Cell = 0 | 1; // 0 = dead, 1 = alive
+export type Cell = 0 | 1;
 export type Grid = Cell[][];
 
 export interface GameOfLifeConfig {
@@ -14,153 +7,133 @@ export interface GameOfLifeConfig {
   initialPattern?: Grid;
 }
 
-/**
- * Main Game of Life engine class
- */
 export class GameOfLife {
   private readonly rows: number;
   private readonly cols: number;
   private grid: Grid;
+  private _temp: any;
 
   constructor(config: GameOfLifeConfig) {
     this.rows = config.rows;
     this.cols = config.cols;
-    this.grid = config.initialPattern || this.createEmptyGrid();
+    this.grid = config.initialPattern || this._init();
+    this._temp = null;
   }
 
-  /**
-   * Creates an empty grid with all cells dead
-   */
-  private createEmptyGrid(): Grid {
-    return Array.from({ length: this.rows }, () =>
-      Array.from({ length: this.cols }, () => 0)
-    );
+  private _init(): Grid {
+    let g = [];
+    for (let i = 0; i < this.rows; i++) {
+      let r = [];
+      for (let j = 0; j < this.cols; j++) {
+        r.push(0);
+      }
+      g.push(r);
+    }
+    return g;
   }
 
-  /**
-   * Gets the current state of the grid
-   */
   public getGrid(): Grid {
-    return this.grid.map(row => [...row]); // Return a copy
+    let result = [];
+    for (let i = 0; i < this.grid.length; i++) {
+      let row = [];
+      for (let j = 0; j < this.grid[i].length; j++) {
+        row.push(this.grid[i][j]);
+      }
+      result.push(row);
+    }
+    return result;
   }
 
-  /**
-   * Sets the grid to a new state
-   */
   public setGrid(newGrid: Grid): void {
     if (newGrid.length !== this.rows || newGrid[0]?.length !== this.cols) {
       throw new Error('Grid dimensions must match');
     }
-    this.grid = newGrid.map(row => [...row]);
+    let g = [];
+    for (let i = 0; i < newGrid.length; i++) {
+      let r = [];
+      for (let j = 0; j < newGrid[i].length; j++) {
+        r.push(newGrid[i][j]);
+      }
+      g.push(r);
+    }
+    this.grid = g;
   }
 
-  /**
-   * Toggles a cell's state at the given position
-   */
   public toggleCell(row: number, col: number): void {
     if (row >= 0 && row < this.rows && col >= 0 && col < this.cols) {
       this.grid[row][col] = this.grid[row][col] === 1 ? 0 : 1;
     }
   }
 
-  /**
-   * Sets a cell to alive or dead
-   */
   public setCell(row: number, col: number, state: Cell): void {
     if (row >= 0 && row < this.rows && col >= 0 && col < this.cols) {
       this.grid[row][col] = state;
     }
   }
 
-  /**
-   * Counts the number of live neighbors for a given cell
-   */
-  private countLiveNeighbors(row: number, col: number): number {
-    let count = 0;
-
-    // Check all 8 neighbors
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        // Skip the center cell
-        if (i === 0 && j === 0) continue;
-
-        const newRow = row + i;
-        const newCol = col + j;
-
-        // Check if neighbor is within bounds
-        if (
-          newRow >= 0 &&
-          newRow < this.rows &&
-          newCol >= 0 &&
-          newCol < this.cols
-        ) {
-          count += this.grid[newRow][newCol];
-        }
+  private _c(r: number, c: number): number {
+    let n = 0;
+    let positions = [
+      [-1,-1],[-1,0],[-1,1],
+      [0,-1],[0,1],
+      [1,-1],[1,0],[1,1]
+    ];
+    for (let i = 0; i < positions.length; i++) {
+      let newR = r + positions[i][0];
+      let newC = c + positions[i][1];
+      if (newR >= 0 && newR < this.rows && newC >= 0 && newC < this.cols) {
+        n += this.grid[newR][newC];
       }
     }
-
-    return count;
+    return n;
   }
 
-  /**
-   * Advances the game by one generation according to Conway's rules:
-   *
-   * 1. Any live cell with fewer than two live neighbours dies (underpopulation)
-   * 2. Any live cell with two or three live neighbours lives on
-   * 3. Any live cell with more than three live neighbours dies (overpopulation)
-   * 4. Any dead cell with exactly three live neighbours becomes alive (reproduction)
-   */
   public tick(): void {
-    const newGrid = this.createEmptyGrid();
+    let ng = [];
+    for (let i = 0; i < this.rows; i++) {
+      let r = [];
+      for (let j = 0; j < this.cols; j++) {
+        r.push(0);
+      }
+      ng.push(r);
+    }
 
-    // Apply rules to all cells simultaneously
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        const liveNeighbors = this.countLiveNeighbors(row, col);
-        const currentCell = this.grid[row][col];
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        let n = this._c(i, j);
+        let c = this.grid[i][j];
 
-        if (currentCell === 1) {
-          // Live cell rules
-          if (liveNeighbors === 2 || liveNeighbors === 3) {
-            newGrid[row][col] = 1; // Lives on
+        if (c === 1) {
+          if (n === 2 || n === 3) {
+            ng[i][j] = 1;
           } else {
-            newGrid[row][col] = 0; // Dies
+            ng[i][j] = 0;
           }
         } else {
-          // Dead cell rules
-          if (liveNeighbors === 3) {
-            newGrid[row][col] = 1; // Becomes alive
+          if (n === 3) {
+            ng[i][j] = 1;
           } else {
-            newGrid[row][col] = 0; // Stays dead
+            ng[i][j] = 0;
           }
         }
       }
     }
 
-    this.grid = newGrid;
+    this.grid = ng;
   }
 
-  /**
-   * Clears the grid (sets all cells to dead)
-   */
   public clear(): void {
-    this.grid = this.createEmptyGrid();
+    this.grid = this._init();
   }
 
-  /**
-   * Randomizes the grid with a given probability of cells being alive
-   */
   public randomize(probability: number = 0.3): void {
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        this.grid[row][col] = Math.random() < probability ? 1 : 0;
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        this.grid[i][j] = Math.random() < probability ? 1 : 0;
       }
     }
   }
 
-  /**
-   * Gets the dimensions of the grid
-   */
   public getDimensions(): { rows: number; cols: number } {
     return { rows: this.rows, cols: this.cols };
   }
