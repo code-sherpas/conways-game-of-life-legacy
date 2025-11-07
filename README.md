@@ -2,6 +2,34 @@
 
 An implementation of Conway's Game of Life using Next.js, TypeScript, and React.
 
+## Kata Objective: Legacy Code Refactoring
+
+This project is designed as a **legacy code refactoring kata**. Your goal is to implement a new feature in a codebase with poor maintainability while keeping all current features working as expected.
+
+### The Challenge: Implement "Zombie Mode"
+
+Add a new rule to the game where cells that die become "zombies" for one generation before disappearing completely:
+
+1. When a live cell dies (by underpopulation or overpopulation), it becomes a **zombie** (a new state)
+2. Zombies do **not** count as live neighbors for the purpose of Conway's rules
+3. After one generation, zombies become completely dead
+4. Zombies should be visually distinct (suggest using a different color, e.g., red or orange)
+
+### Requirements
+
+- ✅ The current behavior of the game must remain unchanged (except for the zombie visualization)
+- ✅ Add new tests to verify the zombie behavior
+- ✅ Refactor the legacy code as needed to implement the feature cleanly
+- ✅ Update the visualization to show zombies in a different color
+
+### Success Criteria
+
+- The game still follows Conway's original rules for live/dead cells
+- Dying cells transition through a zombie state for exactly one generation
+- Zombies don't affect neighbor counts
+- The code is more maintainable after your changes than before
+- All tests pass
+
 ## Description
 
 This project implements John Conway's "Game of Life" cellular automaton, clearly separating the game engine logic from the visualization and interface controls.
